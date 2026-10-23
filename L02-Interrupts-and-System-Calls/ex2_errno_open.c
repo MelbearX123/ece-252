@@ -29,9 +29,18 @@ void try_open( const char *path );
 
 int main( void ) {
     /* TODO */
+    try_open("ex2_errno_open.c");
+    try_open("nosuchfile.txt");
+    try_open("ex2_errno_open.c/x");
     return 0;
 }
 
 void try_open( const char *path ) {
-    /* TODO */
+    int fd = open(path, O_RDONLY);
+    if (fd == -1) {
+        printf("FAIL %s: %s\n", path, strerror(errno));
+        return;
+    }
+    printf("OK %s\n", path);
+    close(fd);
 }
