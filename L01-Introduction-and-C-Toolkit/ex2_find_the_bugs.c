@@ -19,7 +19,9 @@
 
 /* Bug 1: sum of 1..10 should be 55 */
 void bug1( void ) {
-    int total;
+    //Total does not have an initial value, adding to it will create junk values.
+    //Sol: initialize it to 0
+    int total = 0;
     for ( int i = 1; i <= 10; i++ ) {
         total += i;
     }
@@ -28,8 +30,9 @@ void bug1( void ) {
 
 /* Bug 2: copy "hello" into a new heap string and print it */
 void bug2( void ) {
+    //strlen source does not contain the null terminator. Add 1 to the length
     const char *src = "hello";
-    char *copy = malloc( strlen( src ) );
+    char *copy = malloc( strlen( src ) + 1);
     strcpy( copy, src );
     printf( "copy = %s\n", copy );
     free( copy );
@@ -37,10 +40,11 @@ void bug2( void ) {
 
 /* Bug 3: store a value, print it, release it */
 void bug3( void ) {
+    //We are trying to print a freed value. Free the value after the print
     int *value = malloc( sizeof( int ) );
     *value = 252;
-    free( value );
     printf( "value = %d\n", *value );
+    free( value );
 }
 
 int main( int argc, char **argv ) {
