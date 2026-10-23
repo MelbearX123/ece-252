@@ -22,12 +22,27 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 
 #define BUF_SIZE 256
 
 int main( int argc, char **argv ) {
-    /* TODO */
+    if (argc != 2) {
+        return 1;
+    }
+    int fd = open(argv[1], O_RDONLY);
+    if (fd == -1) {
+        return 1;
+    }
+    void *buf = malloc(BUF_SIZE * sizeof(int));
+    int bytes_read = read(fd, buf, BUF_SIZE - 1);
+    if (bytes_read == -1) {
+        return 1;
+    }
+
+    close(fd);
+
     return 0;
 }
