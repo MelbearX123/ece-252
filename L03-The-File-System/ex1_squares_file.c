@@ -36,8 +36,26 @@ int main( void ) {
 
 void write_squares( void ) {
     /* TODO */
+    FILE *fp = fopen(FILENAME, "w");
+    if (fp == NULL) {
+        return;
+    }
+    for (int i = 1; i <= 10; i++) {
+        fprintf(fp, "%d, %d\n", i, i*i);
+    }
+    fclose(fp);
 }
 
 void read_squares( void ) {
     /* TODO */
+    FILE *fp = fopen(FILENAME, "r");
+    if (fp == NULL) {
+        return;
+    }
+    int i;
+    int sq;
+    while(fscanf( fp, "%d,%d\n", &i, &sq ) == 2) {
+        printf("i: %d, squared: %d\n", i, sq);
+    }
+    fclose(fp);
 }
