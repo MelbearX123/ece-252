@@ -27,6 +27,16 @@
 #include <sys/wait.h>
 
 int main( void ) {
-    /* TODO */
+    int x = 10;
+    pid_t pid = fork();
+    if (pid > 0) {
+        wait(NULL);
+        printf("[parent] pid=%d child=%d x=%d\n", getpid(), pid, x);
+    } else if (pid == 0) {
+        x += 5;
+        printf("[child]  pid=%d x=%d\n", getpid(), x);
+    } else {
+        return 1;
+    }
     return 0;
 }
