@@ -27,6 +27,15 @@
 #include <sys/wait.h>
 
 int main( void ) {
-    /* TODO */
+    pid_t pid = fork();
+    int status;
+    if (pid > 0) {
+        wait(&status);
+        printf("child exited with code %d\n", status);
+    } else if (pid == 0) {
+        execlp( "ls", "ls", "-l", NULL );
+    } else {
+        return 1;
+    }
     return 0;
 }
