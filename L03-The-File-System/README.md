@@ -217,11 +217,18 @@ So `750` = `rwxr-x---`; `644` = `rw-r--r--`; `600` = `rw-------`. You'll use the
 | `scanf` | `<stdio.h>` | `int scanf( const char *fmt, ... )` | Formatted read from standard input. |
 | `getline` | `<stdio.h>` | `ssize_t getline( char **lineptr, size_t *n, FILE *stream )` | Read a whole line, growing the buffer as needed; `-1` at EOF. |
 
-Useful related (not in the lecture): `ftell` (current position), `rewind`, `fread`/`fwrite` (binary blocks), `fgets`, `stat`, `chmod`, `unlink`.
+From the labs (binary files, open with `"rb"` / `"wb"`):
+
+| Function | Header | Signature | Purpose |
+|----------|--------|-----------|---------|
+| `fwrite` | `<stdio.h>` | `size_t fwrite( const void *ptr, size_t size, size_t count, FILE *stream )` | Write `count` items of `size` bytes each from `ptr`. Returns how many items were written. |
+| `fread` | `<stdio.h>` | `size_t fread( void *ptr, size_t size, size_t count, FILE *stream )` | Read up to `count` items of `size` bytes each into `ptr`. Returns how many items were read (fewer than `count` at end of file). |
+
+Useful related (not in the lecture): `ftell` (current position), `rewind`, `fgets`, `stat`, `chmod`, `unlink`.
 
 ## Exercises
 
 1. [ex1_squares_file.c](ex1_squares_file.c) — write with `fprintf`, read back with `fscanf`.
-2. [ex2_mycp.c](ex2_mycp.c) — build `cp` with `fgetc`/`fputc`.
+2. [ex2_binary_records.c](ex2_binary_records.c) — write structs to a binary file with `fwrite`, read them back with `fread`, jump to one with `fseek`.
 
 Older, longer exercises are in [old-exercises/](old-exercises/) for extra practice.
