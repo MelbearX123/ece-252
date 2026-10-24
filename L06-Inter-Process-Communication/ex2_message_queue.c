@@ -35,5 +35,23 @@ struct msg {
 
 int main( void ) {
     /* TODO */
+    int msgqid = msgget(IPC_PRIVATE, IPC_CREAT | 0600);
+    pid_t pid = fork();
+    if (pid > 0) {
+        struct msg m2;
+        msgrcv(msgqid, &m2, sizeof(m2.text), 1, 0);
+        printf("parent got: %s\n", m2.text);
+        wait(NULL);
+        msgctl(msgqid, IPC_RMID, NULL);
+
+    } else if (pid == 0) {
+        struct msg m;
+        m.mtype = 1;
+        strcpy( m.text, "hello from child" );
+        msgsnd(msgqid, &m, sizeof(m.text), 0);
+        exit(0);
+    } else {
+        return 1;
+    }
     return 0;
 }
