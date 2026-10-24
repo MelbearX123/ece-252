@@ -24,9 +24,35 @@ static volatile sig_atomic_t quit = 0;
 
 void handler( int signo ) {
     /* TODO */
+    //handler should not do anything except set a value
+    //and let main handle it
+    quit = 1;
 }
 
 int main( void ) {
     /* TODO */
+    signal(SIGINT, handler); //now on the signal, run handler instead of killing
+    //instead of a function, can also do
+    //signal(SIGINT, SIG_IGN) ignores signal
+    //signal(SIGINT, SIG_DFL) go back to default
+
+
+    while (!quit) {
+        printf("working...\n");
+        sleep(1);
+    }
+    printf("Cntrl-C caught, cleaning up\n");
     return 0;
+
+    /*
+    other notes
+    sigprocmask blocks signals for a bit:
+    sigset_t set, previous;
+    sigemptyset( &set );                         // start with an empty set
+    sigaddset( &set, SIGINT );                   // put SIGINT in it
+
+    sigprocmask( SIG_BLOCK, &set, &previous );   // block SIGINT (save the old mask)
+    //important work — Ctrl-C can't interrupt this
+    sigprocmask( SIG_SETMASK, &previous, NULL ); // restore — a pending Ctrl-C hits now
+    */
 }
