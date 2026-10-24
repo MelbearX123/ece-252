@@ -27,11 +27,37 @@
 size_t write_cb( char *ptr, size_t size, size_t nmemb, void *userdata );
 
 int main( int argc, char **argv ) {
-    /* TODO */
+    if (argc != 2) {
+        return 1;
+    }
+    char *path = argv[1];
+    CURL *curl;
+    CURLcode res;
+    ssize_t total = 0;
+
+    curl_global_init(CURL_GLOBAL_DEFAULT);
+
+    curl = curl_easy_init();
+    if (curl) {
+        curl_easy_setopt(curl, CURLOPT_URL, path);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_cb);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &total);
+
+        res = curl_easy_perform(curl);
+        if (res != CURLE_OK) {
+            perror("curl error");
+        } else {
+            printf("downloaded %zu bytes\n", total); 
+        }
+        curl_easy_cleanup(curl);
+    }
+    curl_global_cleanup();
     return 0;
 }
 
 size_t write_cb( char *ptr, size_t size, size_t nmemb, void *userdata ) {
-    /* TODO */
-    return 0;
+    size_t chunk = size * nmemb;          // how many bytes arrived this time
+    size_t *total = (size_t *) userdata;  // userdata is really &total from main
+    *total += chunk;                      // add to main's counter
+    return chunk;       
 }
