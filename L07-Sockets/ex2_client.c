@@ -29,5 +29,35 @@
 
 int main( void ) {
     /* TODO */
+    struct addrinfo hints;
+    struct addrinfo *res;
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
+
+    getaddrinfo("localhost", "2520", &hints, &res);
+    int sockfd = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+    int status = connect(sockfd, res->ai_addr, res->ai_addrlen);
+
+    char buf[100];
+    ssize_t n = recv(sockfd, buf, sizeof(buf) - 1, 0);
+    if (n > 0) {
+        buf[n] = '\0';
+        printf("server says: %s\n", buf);
+    }
+
+    close(sockfd);
+    freeaddrinfo(res);
     return 0;
 }
+/*
+This is the client side:
+We need to setup hints (tells getaddrinfo what type of)
+answer we want. We zerod everything except for family
+and socktype. It puts the answers in res.
+
+We then use the answers in res to open our socket and
+connect to it.
+
+Remember to close socket and freeaddrinfo(res) at end
+*/
