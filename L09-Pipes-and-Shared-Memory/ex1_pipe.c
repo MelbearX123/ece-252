@@ -29,5 +29,29 @@
 
 int main( void ) {
     /* TODO */
+    int fd[2];
+    char msg[BUFFER_SIZE] = "Heheheaw";
+    char rcv[BUFFER_SIZE];
+    if (pipe(fd) == -1) {
+        return 1;
+    }
+
+    pid_t pid = fork();
+    if (pid > 0) {
+        close(fd[READ_END]);
+        write(fd[WRITE_END], msg, strlen(msg) + 1);
+        close(fd[WRITE_END]);
+        wait(NULL);
+
+    } else if (pid == 0) {
+        close(fd[WRITE_END]);
+        read(fd[READ_END], rcv, BUFFER_SIZE);
+        printf("Child read: %s\n", rcv);
+        close(fd[READ_END]);
+    } else {
+        close(fd[WRITE_END]);
+        close(fd[READ_END]);
+        return 1;
+    }
     return 0;
 }
