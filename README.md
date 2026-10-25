@@ -4,7 +4,8 @@ One folder per lecture. Each folder contains:
 
 - `README.md` — the core content of the lecture explained in depth, plus a table of every new function / system call introduced.
 - `ex1_*`, `ex2_*` — two short exercises per lecture. `.c` files have the task in the header comment and starter code with `TODO`s. `.md` files are pen-and-paper or command-line exercises.
-- `old-exercises/` — the original, longer exercise sets, kept for extra practice later.
+- `old-exercises/` — the original, longer exercise sets, kept for extra practice later (L01–L10).
+- `slides.pdf` — the lecture slides (L11 onward).
 
 | # | Folder | Topic |
 |---|--------|-------|
@@ -18,6 +19,9 @@ One folder per lecture. Each folder contains:
 | 8 | [L08-Network-Communication](L08-Network-Communication/) | `send`/`recv`, UDP, serialization, libcurl |
 | 9 | [L09-Pipes-and-Shared-Memory](L09-Pipes-and-Shared-Memory/) | Pipes, FIFOs, System V shared memory, `mmap` |
 | 10 | [L10-Threads](L10-Threads/) | Threads vs processes, pthreads |
+| 11 | [L11-Threads-and-Concurrency](L11-Threads-and-Concurrency/) | Cancellation and cleanup handlers, time slicing, Amdahl's law |
+| 12 | [L12-Concurrency-Synchronization-Atomicity](L12-Concurrency-Synchronization-Atomicity/) | Serialization, mutual exclusion, atomicity, critical sections, test-and-set |
+| 13 | [L13-Semaphores](L13-Semaphores/) | Binary and counting semaphores, mutexes, `sem_wait`/`sem_post` |
 
 ## Setup (WSL)
 
@@ -43,7 +47,7 @@ gcc -Wall -Wextra -g ex1_something.c -o ex1
 
 Extra flags where needed:
 
-- Threads (L10): add `-pthread`
+- Threads and semaphores (L10–L13): add `-pthread`
 - libcurl (L08): add `-lcurl`
 
 Run memory-related exercises under `valgrind --leak-check=full ./ex1` to catch leaks and invalid accesses.
