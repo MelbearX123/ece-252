@@ -31,6 +31,24 @@
 #include <sys/wait.h>
 
 int main( void ) {
-    /* TODO */
+    int shmid = shmget(IPC_PRIVATE, sizeof(int), IPC_CREAT | 0600);
+    int *shared = shmat(shmid, NULL, 0);
+    *shared = 0;
+
+    pid_t pid = fork();
+    if (pid > 0) {
+        wait(NULL);
+        printf("Parent sees: %d\n", *shared);
+        shmdt(shared);
+    } else if (pid == 0) {
+        *shared = 252;
+        shmdt(shared);
+        exit(0);
+    } else {
+        shmdt(shared);
+        shmctl(shmid, IPC_RMID, NULL);
+        return 1;
+    }
+    shmctl(shmid, IPC_RMID, NULL);
     return 0;
 }
