@@ -39,13 +39,33 @@
 #include <pthread.h>
 
 void *worker( void *arg );
+void handler(void *ptr) {
+    if (ptr != NULL) {
+        free(ptr);
+    }
+}
 
 int main( void ) {
     /* TODO */
+    pthread_t t;
+    pthread_create(&t, NULL, worker, NULL);\
+    sleep(3); 
+    pthread_cancel(t);
+
+    void *result;
+    pthread_join(t, &result);
+    printf("thread was cancelled: %s\n", result == PTHREAD_CANCELED ? "yes" : "no");
     return 0;
 }
 
 void *worker( void *arg ) {
     /* TODO */
-    return NULL;
+    int *buf = malloc(sizeof(int));
+    pthread_cleanup_push(handler, buf);
+    while (1) {
+        printf("hi this is message\n");
+        sleep(1);
+    }
+    pthread_cleanup_pop(1);
+    pthread_exit(buf);
 }
